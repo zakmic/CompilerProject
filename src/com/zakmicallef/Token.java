@@ -1,5 +1,7 @@
 package com.zakmicallef;
 
+import com.zakmicallef.Exception.LexerException;
+
 import java.util.HashMap;
 import java.util.Map;
 

@@ -1,0 +1,7 @@
+package com.zakmicallef.Exception;
+
+public class SyntaxError extends Exception {
+    public SyntaxError(String message) {
+        super(message);
+    }
+}
