@@ -53,7 +53,7 @@ public class Token {
     public static enum TokenType {
         TK_Bool,
         TK_Integer,
-        TK_Real,
+        TK_Float,
         TK_String,
         TK_Auto,
         TK_Identifier,
@@ -89,7 +89,7 @@ public class Token {
                 case S01:
                     return new Token(TK_Integer, lexeme, Integer.parseInt(lexeme));
                 case S03:
-                    return new Token(TK_Real, lexeme, Double.parseDouble(lexeme));
+                    return new Token(TK_Float, lexeme, Double.parseDouble(lexeme));
                 case S06:
                     return new Token(TK_String, lexeme.substring(1, lexeme.length() - 2)); // without inverted commas
                 case S07:
