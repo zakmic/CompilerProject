@@ -68,8 +68,8 @@ public class Token {
         TK_Semicolon,
         TK_OpenCurly,
         TK_ClosCurly,
+        TK_KW_Set,
         TK_KW_Let,
-        TK_KW_Var,
         TK_KW_Def,
         TK_KW_Prnt,
         TK_KW_Rtrn,
@@ -113,10 +113,10 @@ public class Token {
 
             if (state == S04) {
                 switch (lexeme) {
+                    case "set":
+                        return new Token(TK_KW_Set, lexeme);
                     case "let":
                         return new Token(TK_KW_Let, lexeme);
-                    case "var":
-                        return new Token(TK_KW_Var, lexeme);
                     case "ff":
                         return new Token(TK_KW_Def, lexeme);
                     case "print":

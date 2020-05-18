@@ -1,12 +1,10 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.AST.ASTExprNode;
-
-public class ASTUnaryNode extends ASTExprNode {
+public class ASTUnaryNode extends ASTExpr {
     String lexeme;
-    ASTExprNode expr;
+    ASTExpr expr;
 
-    public ASTUnaryNode(String lexeme, ASTExprNode expr) {
+    public ASTUnaryNode(String lexeme, ASTExpr expr) {
         this.lexeme = lexeme;
         this.expr = expr;
     }
@@ -19,11 +17,11 @@ public class ASTUnaryNode extends ASTExprNode {
         this.lexeme = lexeme;
     }
 
-    public ASTExprNode getExpr() {
+    public ASTExpr getExpr() {
         return expr;
     }
 
-    public void setExpr(ASTExprNode expr) {
+    public void setExpr(ASTExpr expr) {
         this.expr = expr;
     }
 }

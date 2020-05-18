@@ -8,4 +8,7 @@ public class ASTProgramNode {
     public ASTProgramNode(ArrayList<ASTstsmt> stms) {
         this.stms = stms;
     }
+
+    public static void print(ASTProgramNode program) {
+    }
 }

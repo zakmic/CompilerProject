@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-public class ASTFuncCallNode extends ASTExprNode{
+public class ASTFuncCallNode extends ASTExpr {
     String id;
     ASTActualParams params;
 

@@ -13,7 +13,7 @@ import static com.zakmicallef.Token.TokenType.TK_EOF;
 
 public class Lexer {
 
-    public static ArrayList<Token> tokens = new ArrayList<Token>();
+    public static ArrayList<Token> tokens = new ArrayList<>();
 
     static String code;
     static int pos = 0;
@@ -22,7 +22,7 @@ public class Lexer {
     public static void Lex() {
 
         code = FileInput.readFile("code.txt");
-        while (pos < code.length() - 1) {
+        while (pos < code.length() + 1) { //+1 Because of EoF Token
             try {
                 Token nextToken = nextToken();
                 if (nextToken != null) {
@@ -46,6 +46,7 @@ public class Lexer {
     }
 
     public static Token getNextToken() {
+        System.out.println("Consuming Token: " + tokens.get(pos).getLexeme());
         return tokens.get(pos++);
     }
 
@@ -53,14 +54,19 @@ public class Lexer {
         char c;
         String lexeme = "";
         States.State currState = S00;
-        Stack<States.State> stateStack = new Stack<States.State>();
+        Stack<States.State> stateStack = new Stack<>();
         stateStack.push(DEF);
+        int cpos = 2;
+        if(pos < 3){
+            cpos = 0;
+        }
+
 
         //Clear Prefixed Whitespace
         do {
             c = nextChar();
             if (c == 0) {
-                return null;
+                return new Token(TK_EOF, "EOF");
             }
         } while (whitespace(c));
         c = rollback();
@@ -69,11 +75,10 @@ public class Lexer {
 
             do {
                 c = nextChar();
-                if (c == 0) {
-                    return new Token(TK_EOF, "");
+                if (prevChar(cpos) == 0) {
+                    return new Token(TK_EOF, "EOF");
                 }
             } while (c == '\r');
-
             lexeme += c;
 
             if (isFinalState(currState)) {
@@ -113,12 +118,25 @@ public class Lexer {
         throw new LexerException("Final");
     }
 
-    private static char rollback() {
-        char c = code.charAt(--pos);
-        if (c == '\n') {
-            currLine--;
+    private static char prevChar(int cpos) {
+        try {
+            return code.charAt(pos - cpos);
+        } catch (StringIndexOutOfBoundsException s) {
+            return 0;
         }
-        return c;
+    }
+
+
+    private static char rollback() {
+        try {
+            char c = code.charAt(--pos);
+            if (c == '\n') {
+                currLine--;
+            }
+            return c;
+        }catch (StringIndexOutOfBoundsException s){
+            return 0;
+        }
     }
 
 
@@ -129,7 +147,7 @@ public class Lexer {
 
     private static char nextChar() {
         try {
-            char c = code.charAt(++pos);
+            char c = code.charAt(pos++);
             if (c == '\n') {
                 currLine++;
             }

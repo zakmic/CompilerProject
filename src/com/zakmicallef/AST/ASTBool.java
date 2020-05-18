@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-public class ASTBool extends ASTExprNode {
+public class ASTBool extends ASTExpr {
     boolean value;
 
     public ASTBool(boolean value) {

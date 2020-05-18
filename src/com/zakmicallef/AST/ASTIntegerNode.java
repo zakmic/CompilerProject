@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-public class ASTIntegerNode extends ASTExprNode {
+public class ASTIntegerNode extends ASTExpr {
     int value;
 
     public ASTIntegerNode(double value) {
