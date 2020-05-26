@@ -8,7 +8,7 @@ ff XGreaterThanY(x:float , y:float) : auto {
   return ans;
 }
 
-ff AverageOfThree()(x:float , y:float, z:float) : float {
+ff AverageOfThree(x:float , y:float, z:float) : float {
     let total:float = x + y + z;
     return total / 3;
 }

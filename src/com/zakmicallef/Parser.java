@@ -58,9 +58,6 @@ public class Parser {
                 return parseBlock();
             case TK_Identifier: // assignment
                 return parseAssignment();
-            case TK_EOF: // EOF
-                System.out.println("EOF Reached");
-                return null;
             default:
                 throw new SyntaxError("Invalid Statement Start");
         }
