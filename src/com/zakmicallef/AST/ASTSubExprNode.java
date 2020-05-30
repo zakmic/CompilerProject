@@ -1,7 +1,7 @@
 package com.zakmicallef.AST;
 
 public class ASTSubExprNode extends ASTExpr {
-    ASTExpr exps;
+    public ASTExpr exps;
 
     public ASTSubExprNode(ASTExpr exps) {
         this.exps = exps;

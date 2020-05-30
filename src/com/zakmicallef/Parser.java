@@ -11,7 +11,7 @@ public class Parser {
     public static Token lookahead = Lexer.getNextToken();
 
     public static ASTProgramNode parse() {
-        ArrayList<ASTstsmt> stms = new ArrayList<ASTstsmt>();
+        ArrayList<ASTstsmt> stms = new ArrayList<>();
 
         while (lookahead.getTokenType() != Token.TokenType.TK_EOF) {
             ASTstsmt stsmt = parseStmt();
@@ -63,7 +63,7 @@ public class Parser {
         }
     }
 
-    private static ASTstsmt parseFor() {
+    private static ASTFor parseFor() {
         System.out.println("Doing For");
         consume(TK_KW_For);
         consume(TK_OpenBrck);
@@ -81,7 +81,7 @@ public class Parser {
         return new ASTFor(var, expr, assignment, block);
     }
 
-    private static ASTstsmt parseWhile() {
+    private static ASTWhile parseWhile() {
         System.out.println("Doing While");
         consume(TK_KW_While);
         consume(TK_OpenBrck);
@@ -91,7 +91,7 @@ public class Parser {
         return new ASTWhile(expr, block);
     }
 
-    private static ASTstsmt parseIf() {
+    private static ASTIf parseIf() {
         System.out.println("Parsing If");
         consume(TK_KW_If);
         consume(TK_OpenBrck);
@@ -120,7 +120,7 @@ public class Parser {
         consume(TK_Colon);
         Token type = consume(TK_Type);
         ASTBlock block = parseBlock();
-        return new ASTFuncDecl(id.getLexeme(), params, getTypeString(type.getLexeme()), block);
+        return new ASTFuncDecl(new ASTidNode(id.getLexeme()), params, getType(type.getTokenType()), block);
     }
 
     private static ASTReturn parseReturn() {
@@ -131,7 +131,7 @@ public class Parser {
         return new ASTReturn(expr);
     }
 
-    private static ASTstsmt parsePrint() {
+    private static ASTPrint parsePrint() {
         System.out.println("Parsing Print");
         consume(TK_KW_Prnt);
         ASTExpr expr = parseExpression();
@@ -170,7 +170,7 @@ public class Parser {
         Token id = consume(TK_Identifier);
         consume(TK_Colon);
         Token type = consume(TK_Type);
-        return new ASTFormalParam(id.getLexeme(), getTypeString(type.getLexeme()));
+        return new ASTFormalParam(new ASTidNode(id.getLexeme()), type.getLexeme());
     }
 
     private static ASTAssignment parseAssignment() {
@@ -179,7 +179,7 @@ public class Parser {
         consume(TK_Equals);
         ASTExpr expr = parseExpression();
         consume(TK_Semicolon);
-        return new ASTAssignment(id.getLexeme(), expr);
+        return new ASTAssignment(new ASTidNode(id.getLexeme()), expr);
     }
 
 
@@ -192,7 +192,7 @@ public class Parser {
         consume(TK_Equals);
         ASTExpr expr = parseExpression();
         consume(TK_Semicolon);
-        return new ASTVarNode(id.getLexeme(), type, expr);
+        return new ASTVarNode(new ASTidNode(id.getLexeme()), type, expr);
     }
 
 
@@ -225,8 +225,8 @@ public class Parser {
 
         if (lookahead.getTokenType() == TK_MulOp) {
             Token addOp = consume(TK_MulOp);
-            ASTExpr simpleExpr = parseSimpleExpression();
-            return new ASTBinExprNode(factor, simpleExpr, addOp.getLexeme());
+            ASTExpr term = parseTerm();
+            return new ASTBinExprNode(factor, term, addOp.getLexeme());
         } else {
             return factor;
         }
@@ -256,7 +256,7 @@ public class Parser {
     private static ASTUnaryNode parseUnary() {
         if (lookahead.getLexeme().equalsIgnoreCase("-") ||
                 lookahead.getLexeme().equalsIgnoreCase("not")) {
-            Token op = consume(TK_RelOp);
+            Token op = consume(TK_AddOp);
             ASTExpr expr = parseExpression();
             return new ASTUnaryNode(op.getLexeme(), expr);
         } else {
@@ -278,7 +278,7 @@ public class Parser {
             consume(TK_OpenBrck);
             ASTActualParams actualParams = parseActualParams();
             consume(TK_ClosBrck);
-            return new ASTFuncCallNode(id.getLexeme(), actualParams);
+            return new ASTFuncCallNode(new ASTidNode(id.getLexeme()), actualParams);
         } else {
             return new ASTidNode(id.getLexeme());
         }
@@ -323,16 +323,16 @@ public class Parser {
         }
     }
 
-    public static String getType(Token.TokenType type) {
+    public static ASTType.Type getType(Token.TokenType type) {
         switch (type) {
             case TK_Integer:
-                return "int";
+                return ASTType.Type.Int;
             case TK_Float:
-                return "float";
+                return ASTType.Type.Float;
             case TK_Auto:
-                return "auto";
+                return ASTType.Type.Auto;
             case TK_Bool:
-                return "bool";
+                return ASTType.Type.Bool;
             default:
                 throw new SyntaxError("Invalid Type Name");
         }

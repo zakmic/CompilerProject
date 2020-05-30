@@ -6,10 +6,10 @@ import static com.zakmicallef.Parser.getType;
 
 public class ASTAssignment extends ASTstsmt {
 
-    String id;
-    ASTExpr expr;
+    public ASTidNode id;
+    public ASTExpr expr;
 
-    public ASTAssignment(String id, ASTExpr expr) {
+    public ASTAssignment(ASTidNode id, ASTExpr expr) {
         this.id = id;
         this.expr = expr;
     }

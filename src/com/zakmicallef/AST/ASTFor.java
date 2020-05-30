@@ -2,10 +2,10 @@ package com.zakmicallef.AST;
 
 public class ASTFor extends ASTstsmt {
 
-    ASTVarNode var;
-    ASTExpr expr;
-    ASTAssignment assignment;
-    ASTBlock block;
+    public ASTVarNode var;
+    public ASTExpr expr;
+    public ASTAssignment assignment;
+    public ASTBlock block;
 
     public ASTFor(ASTVarNode var, ASTExpr expr, ASTAssignment assignment, ASTBlock block) {
         this.var = var;

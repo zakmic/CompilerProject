@@ -1,8 +1,8 @@
 package com.zakmicallef.AST;
 
 public class ASTUnaryNode extends ASTExpr {
-    String lexeme;
-    ASTExpr expr;
+    public String lexeme;
+    public ASTExpr expr;
 
     public ASTUnaryNode(String lexeme, ASTExpr expr) {
         this.lexeme = lexeme;
@@ -24,4 +24,6 @@ public class ASTUnaryNode extends ASTExpr {
     public void setExpr(ASTExpr expr) {
         this.expr = expr;
     }
+
+
 }

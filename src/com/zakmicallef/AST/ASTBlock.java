@@ -1,9 +1,11 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+
 import java.util.ArrayList;
 
 public class ASTBlock extends ASTstsmt {
-    ArrayList<ASTstsmt> stmts;
+    public ArrayList<ASTstsmt> stmts;
 
     public ASTBlock(ArrayList<ASTstsmt> stmts) {
         this.stmts = stmts;
@@ -15,5 +17,9 @@ public class ASTBlock extends ASTstsmt {
 
     public void setStmts(ArrayList<ASTstsmt> stmts) {
         this.stmts = stmts;
+    }
+
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
     }
 }

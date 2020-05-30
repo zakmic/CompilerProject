@@ -1,7 +1,7 @@
 package com.zakmicallef.AST;
 
 public class ASTidNode extends ASTExpr {
-    String lexeme;
+    public String lexeme;
 
     public ASTidNode(String lexeme) {
         this.lexeme = lexeme;

@@ -1,7 +1,7 @@
 package com.zakmicallef.AST;
 
 public class ASTReturn extends ASTstsmt {
-    ASTExpr expr;
+    public ASTExpr expr;
 
     public ASTReturn(ASTExpr expr) {
         this.expr = expr;

@@ -9,4 +9,7 @@ public class ASTstsmt {
     public String toString() {
         return "ASTstsmt{}";
     }
+
+    public void accept() {
+    }
 }

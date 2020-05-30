@@ -1,13 +1,9 @@
 package com.zakmicallef.AST;
 
 public class ASTBinExprNode extends ASTExpr {
-    ASTExpr term;
-    ASTExpr simpleExpr;
-    String lexeme;
-
-//    public ASTBinExprNode(ASTExpr term, ASTExpr simpleExpr, String lexeme) {
-//        super();
-//    }
+    public ASTExpr term;
+    public ASTExpr simpleExpr;
+    public String lexeme;
 
 
     public ASTBinExprNode(ASTExpr term, ASTExpr simpleExpr, String lexeme) {

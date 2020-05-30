@@ -1,8 +1,8 @@
 package com.zakmicallef.AST;
 
 public class ASTWhile extends ASTstsmt {
-    ASTExpr expr;
-    ASTBlock block;
+    public ASTExpr expr;
+    public ASTBlock block;
 
     public ASTWhile(ASTExpr expr, ASTBlock block) {
         this.expr = expr;

@@ -1,7 +1,7 @@
 package com.zakmicallef.AST;
 
 public class ASTBool extends ASTExpr {
-    boolean value;
+    public boolean value;
 
     public ASTBool(boolean value) {
         this.value = value;

@@ -1,7 +1,7 @@
 package com.zakmicallef.AST;
 
 public class ASTFloatNode extends ASTExpr {
-    double value;
+    public double value;
 //    public ASTFloatNode(double value) {
 //        super();
 //    }

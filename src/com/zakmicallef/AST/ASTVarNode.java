@@ -1,21 +1,21 @@
 package com.zakmicallef.AST;
 
 public class ASTVarNode extends ASTstsmt {
-    String id;
+    ASTidNode id;
     String type;
     ASTExpr expression;
 
-    public ASTVarNode(String id, String type, ASTExpr expression) {
+    public ASTVarNode(ASTidNode id, String type, ASTExpr expression) {
         this.id = id;
         this.type = type;
         this.expression = expression;
     }
 
-    public String getId() {
+    public ASTidNode getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ASTidNode id) {
         this.id = id;
     }
 
