@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 public class ASTFor extends ASTstsmt {
 
     public ASTVarNode var;
@@ -45,4 +48,13 @@ public class ASTFor extends ASTstsmt {
     public void setBlock(ASTBlock block) {
         this.block = block;
     }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
+
 }

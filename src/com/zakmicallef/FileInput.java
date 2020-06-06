@@ -1,6 +1,7 @@
 package com.zakmicallef;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class FileInput {
     public static String readFile(String path) {
@@ -23,5 +24,37 @@ public class FileInput {
         }
         return null;
     }
+
+    static void writeToFile(ArrayList<String> allWords, String path) {
+        try {
+            File OutFile = new File(path);
+
+            if (!OutFile.exists()) {
+                OutFile.createNewFile();
+            }
+
+            FileWriter fw = new FileWriter(OutFile);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            for (String word : allWords) {
+                bw.write(word);
+                bw.write("\n");
+            }
+
+
+            System.out.println("Total " + allWords.size());
+
+            try {
+                bw.close();
+            } catch (Exception ex) {
+                System.out.println("Error in closing the BufferedWriter" + ex);
+            }
+        } catch (IOException io) {
+            io.getCause();
+            io.getMessage();
+        }
+
+    }
+
 
 }

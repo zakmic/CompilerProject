@@ -1,10 +1,11 @@
 package com.zakmicallef.AST;
 
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
 
 import java.util.ArrayList;
 
-public class ASTFormalParam {
+public class ASTFormalParam extends ASTNode {
     public ASTidNode lexeme;
     public String type;
 
@@ -16,4 +17,7 @@ public class ASTFormalParam {
     public void accept(ASTVisitor astVisitor) {
         astVisitor.visit(this);
     }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 }

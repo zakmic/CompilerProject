@@ -2,40 +2,43 @@ package com.zakmicallef.Visitor;
 
 import com.zakmicallef.AST.*;
 
+import java.util.ArrayList;
+
 public class ASTVisitor {
+    public ArrayList<String> str = new ArrayList<>();
     String indentation = "";
 
     void removeLastChar() {
         indentation = indentation.substring(0, indentation.length() - 1);
     }
 
-    void visit(ASTProgramNode node) {
-        System.out.println("<AbstractSyntaxTree>");
+    public void visit(ASTProgramNode node) {
+        str.add("<AbstractSyntaxTree>");
         indentation += '\t';
         for (ASTstsmt stmt : node.stms) {
-            stmt.accept();
+            stmt.accept(this);
         }
         removeLastChar();
-        System.out.println("</AbstractSyntaxTree>");
+        str.add("</AbstractSyntaxTree>");
     }
 
-    void visit(ASTVarNode node) {
-        System.out.println(indentation + "<Variable>");
+    public void visit(ASTVarNode node) {
+        str.add(indentation + "<Variable>");
 
         indentation += '\t';
         node.getId().accept(this);
 
-        System.out.println("Expression");
+        str.add(indentation + "<Expression>");
         node.getExpression().accept(this);
         removeLastChar();
-        System.out.println("/Expression");
-        removeLastChar();
+        str.add(indentation + "</Expression>");
+//        removeLastChar();
 
-        System.out.println(indentation + "</Variable>");
+        str.add(indentation + "</Variable>");
     }
 
-    void visit(ASTAssignment node) {
-        System.out.println(indentation + "<Assignment>");
+    public void visit(ASTAssignment node) {
+        str.add(indentation + "<Assignment>");
         indentation += '\t';
 
         node.id.accept(this);
@@ -44,78 +47,93 @@ public class ASTVisitor {
         node.expr.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</Assignment>");
+        str.add(indentation + "</Assignment>");
     }
 
-    void visit(ASTPrint node) {
-        System.out.println(indentation + "<Print>");
+    public void visit(ASTPrint node) {
+        str.add(indentation + "<Print>");
         indentation += '\t';
 
         node.expr.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</Print>");
+        str.add(indentation + "</Print>");
     }
 
-    void visit(ASTIf node) {
-        System.out.println(indentation + "<If>");
+    public void visit(ASTIf node) {
+        str.add(indentation + "<If>");
         indentation += '\t';
 
         node.expr.accept(this);
         node.ifBlock.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</If>");
+        str.add(indentation + "</If>");
     }
 
-    void visit(ASTWhile node) {
-        System.out.println(indentation + "<While>");
+    public void visit(ASTFor node) {
+        str.add(indentation + "<For>");
+        indentation += '\t';
+        if (node.var != null) {
+            node.var.accept(this);
+        }
+        node.expr.accept(this);
+        if (node.assignment != null) {
+            node.assignment.accept(this);
+        }
+        node.block.accept(this);
+        removeLastChar();
+        str.add(indentation + "</For>");
+    }
+
+    public void visit(ASTWhile node) {
+        str.add(indentation + "<While>");
         indentation += '\t';
 
         node.expr.accept(this);
         node.block.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</While>");
+        str.add(indentation + "</While>");
     }
 
-    void visit(ASTReturn node) {
-        System.out.println(indentation + "<Return>");
+    public void visit(ASTReturn node) {
+        str.add(indentation + "<Return>");
         indentation += '\t';
 
         node.expr.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</Return>");
+        str.add(indentation + "</Return>");
     }
 
-    void visit(ASTFuncDecl node) {
-        System.out.println(indentation + "<Function Decl>");
+    public void visit(ASTFuncDecl node) {
+        str.add(indentation + "<FunctionDecl>");
         indentation += '\t';
 
-        node.lexeme.accept(this);
+        node.id.accept(this);
         node.params.accept(this);
         node.block.accept(this);
         //Type
 
         removeLastChar();
-        System.out.println(indentation + "</Function Decl>");
+        str.add(indentation + "</FunctionDecl>");
     }
 
     public void visit(ASTBlock node) {
-        System.out.println(indentation + "<Block>");
+        str.add(indentation + "<Block>");
         indentation += '\t';
 
         for (ASTstsmt stmt : node.stmts) {
-            stmt.accept();
+            stmt.accept(this);
         }
 
         removeLastChar();
-        System.out.println(indentation + "</Block>");
+        str.add(indentation + "</Block>");
     }
 
     public void visit(ASTFormalParams node) {
-        System.out.println(indentation + "<Formal Params>");
+        str.add(indentation + "<FormalParams>");
         indentation += '\t';
 
         for (ASTFormalParam param : node.astFormalParams) {
@@ -123,79 +141,94 @@ public class ASTVisitor {
         }
 
         removeLastChar();
-        System.out.println(indentation + "</Formal Params>");
+        str.add(indentation + "</FormalParams>");
     }
 
     public void visit(ASTFormalParam node) {
-        System.out.println(indentation + "<Formal Param>");
+        str.add(indentation + "<FormalParam>");
         indentation += '\t';
 
         node.lexeme.accept(this);
         //Type
 
         removeLastChar();
-        System.out.println(indentation + "</Formal Param>");
+        str.add(indentation + "</FormalParam>");
     }
 
-    void visit(ASTBinExprNode node) {
-        System.out.println(indentation + "<BinaryExpression>");
+    public void visit(ASTBinExprNode node) {
+        str.add(indentation + "<BinaryExpression>");
         indentation += '\t';
 
         node.simpleExpr.accept(this);
         node.term.accept(this);
-        System.out.println("Binary: " + node.getLexeme());
+        str.add(indentation + "Binary: " + node.getLexeme());
 
         removeLastChar();
-        System.out.println(indentation + "</BinaryExpression>");
+        str.add(indentation + "</BinaryExpression>");
     }
 
-    void visit(ASTBool node) {
+    public void visit(ASTBool node) {
         String boolStr = node.value ? "true" : "false";
 
-        System.out.println(indentation + "<Boolean>");
+        str.add(indentation + "<Boolean>");
         indentation += '\t';
-        System.out.println(boolStr);
+        str.add(indentation + boolStr);
         removeLastChar();
-        System.out.println(indentation + "</Boolean>");
+        str.add(indentation + "</Boolean>");
     }
 
-    void visit(ASTIntegerNode node) {
-        System.out.println(indentation + "<Integer>");
+    public void visit(ASTIntegerNode node) {
+        str.add(indentation + "<Integer>");
         indentation += '\t';
-        System.out.println(node.value);
+        str.add(indentation + node.value);
         removeLastChar();
-        System.out.println(indentation + "</Integer>");
+        str.add(indentation + "</Integer>");
     }
 
-    void visit(ASTFloatNode node) {
-        System.out.println(indentation + "<Float>");
+    public void visit(ASTAuto node) {
+        str.add(indentation + "<Auto>");
         indentation += '\t';
-        System.out.println(node.value);
+        if (node.isBool) {
+            str.add(indentation + node.boolVal);
+        } else if (node.isInt) {
+            str.add(indentation + node.intVal);
+        } else if (node.isFloat) {
+            str.add(indentation + node.floatVal);
+        }
         removeLastChar();
-        System.out.println(indentation + "</Float>");
+        str.add(indentation + "</Auto>");
     }
 
-    void visit(ASTidNode node) {
-        System.out.println(indentation + "<Identifier>");
+
+    public void visit(ASTFloatNode node) {
+        str.add(indentation + "<Float>");
         indentation += '\t';
-        System.out.println(node.getLexeme());
+        str.add(indentation + node.value);
         removeLastChar();
-        System.out.println(indentation + "</Identifier>");
+        str.add(indentation + "</Float>");
     }
 
-    void visit(ASTFuncCallNode node) {
-        System.out.println(indentation + "<FunctionCall>");
+    public void visit(ASTidNode node) {
+        str.add(indentation + "<Identifier>");
+        indentation += '\t';
+        str.add(indentation + node.getLexeme());
+        removeLastChar();
+        str.add(indentation + "</Identifier>");
+    }
+
+    public void visit(ASTFuncCallNode node) {
+        str.add(indentation + "<FunctionCall>");
         indentation += '\t';
 
         node.id.accept(this);
         node.params.accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</FunctionCall>");
+        str.add(indentation + "</FunctionCall>");
     }
 
-    void visit(ASTActualParams node) {
-        System.out.println(indentation + "<Actual Parameter>");
+    public void visit(ASTActualParams node) {
+        str.add(indentation + "<ActualParameter>");
         indentation += '\t';
 
         for (ASTExpr param : node.params) {
@@ -203,28 +236,28 @@ public class ASTVisitor {
         }
 
         removeLastChar();
-        System.out.println(indentation + "</Actual Parameter>");
+        str.add(indentation + "</ActualParameter>");
     }
 
-    void visit(ASTSubExprNode node) {
-        System.out.println(indentation + "<SubExpr>");
+    public void visit(ASTSubExprNode node) {
+        str.add(indentation + "<SubExpr>");
         indentation += '\t';
 
         node.getExps().accept(this);
 
         removeLastChar();
-        System.out.println(indentation + "</SubExpr>");
+        str.add(indentation + "</SubExpr>");
     }
 
-    void visit(ASTUnaryNode node) {
-        System.out.println(indentation + "<Unary>");
-        System.out.println("op: " + node.getLexeme());
+    public void visit(ASTUnaryNode node) {
+        str.add(indentation + "<Unary>");
+        str.add(indentation + "OP: " + node.getLexeme());
 
         indentation += '\t';
         node.expr.accept(this);
         removeLastChar();
 
-        System.out.println(indentation + "</Unary>");
+        str.add(indentation + "</Unary>");
     }
 
 }

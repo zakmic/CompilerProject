@@ -1,6 +1,7 @@
 package com.zakmicallef.AST;
 
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,11 @@ public class ASTBlock extends ASTstsmt {
         this.stmts = stmts;
     }
 
+    @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
     }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 }

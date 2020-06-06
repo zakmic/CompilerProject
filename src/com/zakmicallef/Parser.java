@@ -11,7 +11,7 @@ public class Parser {
     public static Token lookahead = Lexer.getNextToken();
 
     public static ASTProgramNode parse() {
-        ArrayList<ASTstsmt> stms = new ArrayList<>();
+        ArrayList<ASTstsmt> stms = new ArrayList<ASTstsmt>();
 
         while (lookahead.getTokenType() != Token.TokenType.TK_EOF) {
             ASTstsmt stsmt = parseStmt();
@@ -27,7 +27,6 @@ public class Parser {
     }
 
     private static Token consume(Token.TokenType type) throws SyntaxError {
-
         if (lookahead.getTokenType() == type) {
             Token temp = lookahead;
             lookahead = Lexer.getNextToken();
@@ -64,17 +63,20 @@ public class Parser {
     }
 
     private static ASTFor parseFor() {
-        System.out.println("Doing For");
         consume(TK_KW_For);
         consume(TK_OpenBrck);
-        ASTVarNode var = parseVariableDeclaration();
-
-        consume(TK_Comma);
+        ASTVarNode var = null;
+        ASTAssignment assignment = null;
+        if(lookahead.getTokenType() == TK_KW_Let) {
+            var = parseVariableDeclaration();
+        }else {
+            consume(TK_Semicolon);
+        }
         ASTExpr expr = parseExpression();
-
-        consume(TK_Comma);
-        ASTAssignment assignment = parseAssignment();
-
+        consume(TK_Semicolon);
+        if(lookahead.getTokenType() == TK_Identifier) {
+            assignment = parseAssignmentFor();
+        }
         consume(TK_ClosBrck);
         ASTBlock block = parseBlock();
 
@@ -120,7 +122,8 @@ public class Parser {
         consume(TK_Colon);
         Token type = consume(TK_Type);
         ASTBlock block = parseBlock();
-        return new ASTFuncDecl(new ASTidNode(id.getLexeme()), params, getType(type.getTokenType()), block);
+//        return new ASTFuncDecl(new ASTidNode(id.getLexeme()), params, getType(type.getTokenType()), block);
+        return new ASTFuncDecl(new ASTidNode(id.getLexeme()), params, type.getLexeme(), block);
     }
 
     private static ASTReturn parseReturn() {
@@ -182,13 +185,20 @@ public class Parser {
         return new ASTAssignment(new ASTidNode(id.getLexeme()), expr);
     }
 
+    private static ASTAssignment parseAssignmentFor() {
+        Token id = consume(TK_Identifier);
+        consume(TK_Equals);
+        ASTExpr expr = parseExpression();
+        return new ASTAssignment(new ASTidNode(id.getLexeme()), expr);
+    }
+
 
     private static ASTVarNode parseVariableDeclaration() throws SyntaxError {
         System.out.println("Parsing Var Decl");
         consume(TK_KW_Let);
         Token id = consume(TK_Identifier);
         consume(TK_Colon);
-        String type = getTypeString(consume(TK_Type).getLexeme());
+        String type = consume(TK_Type).getLexeme();
         consume(TK_Equals);
         ASTExpr expr = parseExpression();
         consume(TK_Semicolon);
@@ -236,12 +246,13 @@ public class Parser {
         System.out.println("parseFactor: " + lookahead.getLexeme());
         switch (lookahead.getTokenType()) {
             case TK_Bool:
-                System.out.println("Bool");
                 return parseBool();
             case TK_Integer:
                 return new ASTIntegerNode(consume(TK_Integer).getValue());
             case TK_Float:
                 return new ASTFloatNode(consume(TK_Float).getValue());
+            case TK_Auto:
+                return new ASTAuto(consume(TK_Auto).getValue());
             case TK_Identifier:
                 return parseIdentifier();
             case TK_OpenBrck:
@@ -308,22 +319,8 @@ public class Parser {
         }
     }
 
-    private static String getTypeString(String type) {
-        switch (type) {
-            case "int":
-                return "int";
-            case "float":
-                return "float";
-            case "auto":
-                return "auto";
-            case "bool":
-                return "bool";
-            default:
-                throw new SyntaxError("Invalid Type Name");
-        }
-    }
-
     public static ASTType.Type getType(Token.TokenType type) {
+
         switch (type) {
             case TK_Integer:
                 return ASTType.Type.Int;
@@ -332,6 +329,22 @@ public class Parser {
             case TK_Auto:
                 return ASTType.Type.Auto;
             case TK_Bool:
+                return ASTType.Type.Bool;
+            default:
+                throw new SyntaxError("Invalid Type Name");
+        }
+    }
+
+    public static ASTType.Type getType(String type) {
+
+        switch (type) {
+            case "int":
+                return ASTType.Type.Int;
+            case "float":
+                return ASTType.Type.Float;
+            case "auto":
+                return ASTType.Type.Auto;
+            case "bool":
                 return ASTType.Type.Bool;
             default:
                 throw new SyntaxError("Invalid Type Name");

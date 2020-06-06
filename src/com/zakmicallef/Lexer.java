@@ -22,7 +22,7 @@ public class Lexer {
     public static void Lex() {
 
         code = FileInput.readFile("code.txt");
-        while (pos < code.length() + 1) { //+1 Because of EoF Token
+        while (pos < code.length() + 1) { // +1 Because of EoF Token
             try {
                 Token nextToken = nextToken();
                 if (nextToken != null) {
@@ -46,7 +46,7 @@ public class Lexer {
     }
 
     public static Token getNextToken() {
-        System.out.println("Consuming Token: " + tokens.get(pos).getLexeme());
+        System.out.println("Lexeme: " + tokens.get(pos).getLexeme());
         return tokens.get(pos++);
     }
 
@@ -56,9 +56,9 @@ public class Lexer {
         States.State currState = S00;
         Stack<States.State> stateStack = new Stack<>();
         stateStack.push(DEF);
-        int cpos = 2;
-        if(pos < 3){
-            cpos = 0;
+        int charPos = 2;
+        if (pos < 3) {
+            charPos = 0;
         }
 
 
@@ -75,7 +75,7 @@ public class Lexer {
 
             do {
                 c = nextChar();
-                if (prevChar(cpos) == 0) {
+                if (prevChar(charPos) == 0) {
                     return new Token(TK_EOF, "EOF");
                 }
             } while (c == '\r');
@@ -134,7 +134,7 @@ public class Lexer {
                 currLine--;
             }
             return c;
-        }catch (StringIndexOutOfBoundsException s){
+        } catch (StringIndexOutOfBoundsException s) {
             return 0;
         }
     }

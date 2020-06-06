@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 import java.util.ArrayList;
 
 public class ASTProgramNode {
@@ -11,4 +14,12 @@ public class ASTProgramNode {
 
     public static void print(ASTProgramNode program) {
     }
+
+
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 }

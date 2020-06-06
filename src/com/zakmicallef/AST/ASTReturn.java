@@ -1,5 +1,7 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+
 public class ASTReturn extends ASTstsmt {
     public ASTExpr expr;
 
@@ -13,5 +15,10 @@ public class ASTReturn extends ASTstsmt {
 
     public void setExpr(ASTExpr expr) {
         this.expr = expr;
+    }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
     }
 }

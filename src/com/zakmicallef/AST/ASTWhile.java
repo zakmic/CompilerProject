@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 public class ASTWhile extends ASTstsmt {
     public ASTExpr expr;
     public ASTBlock block;
@@ -24,4 +27,12 @@ public class ASTWhile extends ASTstsmt {
     public void setBlock(ASTBlock block) {
         this.block = block;
     }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 }

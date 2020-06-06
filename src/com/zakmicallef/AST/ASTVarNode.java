@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 public class ASTVarNode extends ASTstsmt {
     ASTidNode id;
     String type;
@@ -10,6 +13,14 @@ public class ASTVarNode extends ASTstsmt {
         this.type = type;
         this.expression = expression;
     }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 
     public ASTidNode getId() {
         return id;

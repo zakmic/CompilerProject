@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 public class ASTBinExprNode extends ASTExpr {
     public ASTExpr term;
     public ASTExpr simpleExpr;
@@ -35,4 +38,14 @@ public class ASTBinExprNode extends ASTExpr {
     public void setLexeme(String lexeme) {
         this.lexeme = lexeme;
     }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) {
+        visitor.visit(this);
+    }
+
 }

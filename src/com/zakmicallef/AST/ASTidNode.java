@@ -1,5 +1,8 @@
 package com.zakmicallef.AST;
 
+import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.SemanticAnalysis;
+
 public class ASTidNode extends ASTExpr {
     public String lexeme;
 
@@ -14,4 +17,12 @@ public class ASTidNode extends ASTExpr {
     public void setLexeme(String lexeme) {
         this.lexeme = lexeme;
     }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
 }

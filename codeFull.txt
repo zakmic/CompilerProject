@@ -15,3 +15,30 @@ ff AverageOfThree(x:float , y:float, z:float) : float {
 
 let x:float = 2.4;
 let y:auto = Square(2.5);
+
+
+ff Pow(x:float, n:int) : auto
+{
+    let y:float = 1.0;
+    if(n>0)
+    {
+        for(; n>0 ; n=n-1)
+        {
+            y = y * x;
+        }
+    }
+    else
+    {
+        for(; n>0 ; n=n-1)
+         {
+             y = y / x;
+         }
+    }
+    return y;
+}
+
+let x:auto = Pow(2.1,10);
+
+print x;
+
+
