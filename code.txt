@@ -1,7 +1,45 @@
-let n:int = 2;
-let y:float = 1.0;
-let x:float = 2.45;
-for(; n>0 ; n=n-1)
-{
-    y = y * x;
+ff Square (x:float) : float {
+   return x*x ;
 }
+
+ff XGreaterThanY(x:float , y:float) : auto {
+  let ans:bool = true;
+  if(y > x) {ans = false; }
+  return ans;
+}
+
+ff AverageOfThree(x:float , y:float, z:float) : float {
+    let total:float = x + y + z;
+    return total / 3;
+}
+
+
+let y:float = Square(2.5);
+let x:auto = AverageOfThree(y,2.3,2.8);
+print(y);
+print(x);
+
+
+ff Pow(x:float, n:int) : auto
+{
+    let y:float = 1.0;
+    if(n>0)
+    {
+        for(; n>0 ; n=n-1)
+        {
+            y = y * x;
+        }
+    }
+    else
+    {
+        for(; n>0 ; n=n-1)
+         {
+             y = y / x;
+         }
+    }
+    return y;
+}
+
+let z:auto = Pow(2.1,10);
+
+print (z);

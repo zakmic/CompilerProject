@@ -42,8 +42,6 @@ public class FileInput {
             }
 
 
-            System.out.println("Total " + allWords.size());
-
             try {
                 bw.close();
             } catch (Exception ex) {

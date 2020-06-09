@@ -6,7 +6,12 @@ public class ASTType {
         Float,
         Bool,
         Int,
-        Auto
-    };
+        Auto,
+        Func;
+
+
+    }
+
+    ;
 
 }

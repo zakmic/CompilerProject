@@ -2,7 +2,9 @@ package com.zakmicallef.Visitor;
 
 import com.zakmicallef.AST.ASTType;
 import com.zakmicallef.AST.*;
+import com.zakmicallef.Exception.InterpreterError;
 import com.zakmicallef.Exception.SemanticException;
+import com.zakmicallef.Exception.StoppedException;
 import com.zakmicallef.Exception.SymbolTableError;
 import com.zakmicallef.Token;
 
@@ -16,6 +18,23 @@ public class SemanticAnalysis {
     ASTType.Type currentType;
     ArrayList<ASTType.Type> typeList = new ArrayList<>();
     boolean blockScope;
+
+    public void visit(ASTProgramNode node) {
+        blockScope = true;
+        try {
+            for (ASTstsmt stmt : node.stms) {
+                stmt.accept(this);
+            }
+        } catch (InterpreterError err) {
+//            try {
+//                while (true) {
+//                    table.pop();
+//                }
+//            } catch (SymbolTableError st) {
+//                st.getCause();
+//            }
+        }
+    }
 
     public void visit(ASTBool node) {
         currentType = ASTType.Type.Bool;
@@ -31,23 +50,6 @@ public class SemanticAnalysis {
 
     public void visit(ASTAuto node) {
         currentType = ASTType.Type.Auto;
-    }
-
-    public void visit(ASTProgramNode node) {
-        blockScope = true;
-        try {
-            for (ASTstsmt stmt : node.stms) {
-                stmt.accept(this);
-            }
-        } catch (SymbolTableError err) {
-//            try {
-//                while (true) {
-//                    table.pop();
-//                }
-//            } catch (SymbolTableError er) {
-//                throw err;
-//            }
-        }
     }
 
     public void visit(ASTBinExprNode node) {
@@ -210,7 +212,8 @@ public class SemanticAnalysis {
         isntDuplicate(node.id);
         table.insert(node.id.lexeme, getType(node.type), node.params);
 
-        table.push();
+//        table.push();
+        table.newScope();
         typeList.add(getType(node.type));
         for (ASTFormalParam param : node.params.astFormalParams) {
             table.insert(param.lexeme.lexeme, getType(param.type));
@@ -235,7 +238,8 @@ public class SemanticAnalysis {
         blockScope = true;
 
         if (currentScope) {
-            table.push();
+//            table.push();
+            table.newScope();
         }
 
         for (ASTstsmt stmt : node.stmts) {
@@ -256,7 +260,7 @@ public class SemanticAnalysis {
 
     private void isntDuplicate(ASTidNode node) {
         System.out.println("Lexeme dup " + node.lexeme);
-        if (table.lookup(node.lexeme) != -1) {
+        if (table.lookup(node.lexeme) == 1) {
             throw new SemanticException("Duplicate Declaration of: " + node.lexeme);
         }
     }

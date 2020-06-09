@@ -2,6 +2,7 @@ package com.zakmicallef;
 
 import com.zakmicallef.AST.ASTProgramNode;
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
 public class Main {
@@ -14,6 +15,7 @@ public class Main {
         xmlVisitor.visit(programNode);
         semanticVisitor.visit(programNode);
         FileInput.writeToFile(xmlVisitor.str, xmlpath);
-
+        InterpreterExecution interpreter = new InterpreterExecution();
+        interpreter.visit(programNode);
     }
 }

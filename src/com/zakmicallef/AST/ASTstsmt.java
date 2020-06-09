@@ -1,6 +1,7 @@
 package com.zakmicallef.AST;
 
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
 public class ASTstsmt {
@@ -19,4 +20,9 @@ public class ASTstsmt {
 
     public void accept(SemanticAnalysis visitor) {
     }
+
+    public void accept(InterpreterExecution interpreterExecution) {
+    }
+
+
 }

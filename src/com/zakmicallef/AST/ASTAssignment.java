@@ -2,6 +2,7 @@ package com.zakmicallef.AST;
 
 import com.zakmicallef.Token;
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
 import static com.zakmicallef.Parser.getType;
@@ -22,6 +23,9 @@ public class ASTAssignment extends ASTstsmt {
     }
 
     public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
+    @Override
+    public void accept(InterpreterExecution visitor) { visitor.visit(this); }
 
 
 }

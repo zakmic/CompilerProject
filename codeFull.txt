@@ -39,6 +39,6 @@ ff Pow(x:float, n:int) : auto
 
 let x:auto = Pow(2.1,10);
 
-print x;
+print (x);
 
 

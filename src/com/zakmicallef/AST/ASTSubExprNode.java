@@ -1,6 +1,7 @@
 package com.zakmicallef.AST;
 
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
 public class ASTSubExprNode extends ASTExpr {
@@ -23,5 +24,8 @@ public class ASTSubExprNode extends ASTExpr {
         visitor.visit(this);
     }
     public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+    @Override
+    public void accept(InterpreterExecution visitor) { visitor.visit(this); }
+
 
 }

@@ -1,6 +1,7 @@
 package com.zakmicallef.AST;
 
 import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
 public class ASTFor extends ASTstsmt {
@@ -55,6 +56,10 @@ public class ASTFor extends ASTstsmt {
     }
 
     public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
+
+    @Override
+    public void accept(InterpreterExecution visitor) { visitor.visit(this); }
+
 
 
 }

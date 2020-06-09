@@ -1,24 +1,28 @@
 package com.zakmicallef.Visitor;
 
+import com.zakmicallef.AST.ASTFormalParam;
 import com.zakmicallef.AST.ASTFormalParams;
-import com.zakmicallef.AST.ASTType;
 import com.zakmicallef.Exception.SemanticException;
 import com.zakmicallef.Exception.SymbolTableError;
+import com.zakmicallef.Token;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
+import static com.zakmicallef.Parser.getType;
 
-public class SymbolTable {
+public class SymbolValueTable {
     //Each map represents a scope
-    HashMap<String, SymbolEntry> map = new HashMap<>();
-    private Stack<HashMap<String, SymbolEntry>> scopeStack = new Stack<>();
+    HashMap<String, SymbolValue> map = new HashMap<>();
+    private Stack<HashMap<String, SymbolValue>> scopeStack = new Stack<>();
 
-    public SymbolTable() {
+    public SymbolValueTable() {
         scopeStack.push(new HashMap<>());
     }
 
     void push() {
-        HashMap<String, SymbolEntry> newMap = new HashMap<>(map);
+        HashMap<String, SymbolValue> newMap = new HashMap<>(map);
         scopeStack.push(newMap);
     }
 
@@ -44,10 +48,10 @@ public class SymbolTable {
         scopeStack.pop();
     }
 
-    void insert(String key, ASTType.Type type) {
+    void insert(String key, Value val) {
         ASTFormalParams formalParams = new ASTFormalParams();
-        SymbolEntry value = new SymbolEntry(type, formalParams);
-        HashMap<String, SymbolEntry> top = scopeStack.peek();
+        SymbolValue value = new SymbolValue(val, formalParams);
+        HashMap<String, SymbolValue> top = scopeStack.peek();
 
         if (top.get(key) == null || map.get(key) == top.get(key)) {
             top.put(key, value);
@@ -56,9 +60,9 @@ public class SymbolTable {
         }
     }
 
-    void insert(String key, ASTType.Type type, ASTFormalParams formalParams) {
-        SymbolEntry value = new SymbolEntry(type, formalParams);
-        HashMap<String, SymbolEntry> top = scopeStack.peek();
+    void insert(String key, Value val, ASTFormalParams formalParams) {
+        SymbolValue value = new SymbolValue(val, formalParams);
+        HashMap<String, SymbolValue> top = scopeStack.peek();
 
         if (map.get(key) == top.get(key)) {
             top.put(key, value);
@@ -88,17 +92,22 @@ public class SymbolTable {
     }
 
 
-    SymbolEntry getValue(String key) {
+    SymbolValue getValue(String key) {
         if (lookup(key) == -1) {
             throw new SymbolTableError("ID doesn't exist in symbol table");
         }
-        System.out.println(lookup(key));
 //        System.out.println("Retting" + (scopeStack.size() - lookup(key) - 1));
         return scopeStack.get(scopeStack.size() - lookup(key)).get(key);
     }
+
+    public void edit(String key, Value value) {
+        ASTFormalParams params = new ASTFormalParams();
+        int scopeCount = lookup(key);
+        if (scopeCount == -1) {
+            throw new SymbolTableError("ID doesn't exist");
+        }
+        SymbolValue val = new SymbolValue(value, params);
+        scopeStack.get(scopeStack.size() - scopeCount).remove(key);
+        scopeStack.get(scopeStack.size() - scopeCount).put(key, val);
+    }
 }
-
-
-
-
-
