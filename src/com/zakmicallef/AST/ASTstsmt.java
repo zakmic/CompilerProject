@@ -1,10 +1,10 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
-public class ASTstsmt {
+public class ASTstsmt extends ASTNode {
     public ASTstsmt() {
         super();
     }
@@ -14,7 +14,7 @@ public class ASTstsmt {
         return "ASTstsmt{}";
     }
 
-    public void accept(ASTVisitor visit) {
+    public void accept(XMLVisitor visit) {
         visit.visit((ASTAssignment) this);
     }
 

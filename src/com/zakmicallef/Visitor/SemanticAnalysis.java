@@ -4,9 +4,7 @@ import com.zakmicallef.AST.ASTType;
 import com.zakmicallef.AST.*;
 import com.zakmicallef.Exception.InterpreterError;
 import com.zakmicallef.Exception.SemanticException;
-import com.zakmicallef.Exception.StoppedException;
 import com.zakmicallef.Exception.SymbolTableError;
-import com.zakmicallef.Token;
 
 import java.util.ArrayList;
 
@@ -213,7 +211,7 @@ public class SemanticAnalysis {
         table.insert(node.id.lexeme, getType(node.type), node.params);
 
 //        table.push();
-        table.newScope();
+        table.push();
         typeList.add(getType(node.type));
         for (ASTFormalParam param : node.params.astFormalParams) {
             table.insert(param.lexeme.lexeme, getType(param.type));
@@ -239,7 +237,7 @@ public class SemanticAnalysis {
 
         if (currentScope) {
 //            table.push();
-            table.newScope();
+            table.push();
         }
 
         for (ASTstsmt stmt : node.stmts) {

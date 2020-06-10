@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
@@ -20,7 +20,7 @@ public class ASTBool extends ASTExpr {
     }
 
     @Override
-    public void accept(ASTVisitor visit) {
+    public void accept(XMLVisitor visit) {
         visit.visit(this);
     }
 

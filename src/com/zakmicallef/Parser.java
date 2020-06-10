@@ -39,19 +39,19 @@ public class Parser {
     private static ASTstsmt parseStmt() throws SyntaxError {
         System.out.println("Doing Statement");
         switch (lookahead.getTokenType()) {
-            case TK_KW_Let: // variable declaration
+            case TK_Let: // variable declaration
                 return parseVariableDeclaration();
-            case TK_KW_Prnt: // print statement
+            case TK_Print: // print statement
                 return parsePrint();
-            case TK_KW_If: // if statement
+            case TK_If: // if statement
                 return parseIf();
-            case TK_KW_While: // while statement
+            case TK_While: // while statement
                 return parseWhile();
-            case TK_KW_For: // for statement
+            case TK_For: // for statement
                 return parseFor();
-            case TK_KW_Rtrn: // return statement
+            case TK_Return: // return statement
                 return parseReturn();
-            case TK_KW_Def: // function declaration
+            case TK_Def: // function declaration
                 return parseFunctionDeclaration();
             case TK_OpenCurly: // block
                 return parseBlock();
@@ -63,11 +63,11 @@ public class Parser {
     }
 
     private static ASTFor parseFor() {
-        consume(TK_KW_For);
+        consume(TK_For);
         consume(TK_OpenBrck);
         ASTVarNode var = null;
         ASTAssignment assignment = null;
-        if(lookahead.getTokenType() == TK_KW_Let) {
+        if(lookahead.getTokenType() == TK_Let) {
             var = parseVariableDeclaration();
         }else {
             consume(TK_Semicolon);
@@ -85,7 +85,7 @@ public class Parser {
 
     private static ASTWhile parseWhile() {
         System.out.println("Doing While");
-        consume(TK_KW_While);
+        consume(TK_While);
         consume(TK_OpenBrck);
         ASTExpr expr = parseExpression();
         consume(TK_ClosBrck);
@@ -95,15 +95,15 @@ public class Parser {
 
     private static ASTIf parseIf() {
         System.out.println("Parsing If");
-        consume(TK_KW_If);
+        consume(TK_If);
         consume(TK_OpenBrck);
         ASTExpr expr = parseExpression();
         consume(TK_ClosBrck);
         ASTBlock ifBlock = parseBlock();
         ASTBlock elseBlock;
 
-        if (lookahead.getTokenType() == TK_KW_Else) {
-            consume(TK_KW_Else);
+        if (lookahead.getTokenType() == TK_Else) {
+            consume(TK_Else);
             elseBlock = parseBlock();
         } else {
             elseBlock = null;
@@ -114,7 +114,7 @@ public class Parser {
 
     private static ASTFuncDecl parseFunctionDeclaration() {
         System.out.println("Parsing Func Decl");
-        consume(TK_KW_Def);
+        consume(TK_Def);
         Token id = consume(TK_Identifier);
         consume(TK_OpenBrck);
         ASTFormalParams params = parseFormalParams();
@@ -128,7 +128,7 @@ public class Parser {
 
     private static ASTReturn parseReturn() {
         System.out.println("Parsing Return");
-        consume(TK_KW_Rtrn);
+        consume(TK_Return);
         ASTExpr expr = parseExpression();
         consume(TK_Semicolon);
         return new ASTReturn(expr);
@@ -136,7 +136,7 @@ public class Parser {
 
     private static ASTPrint parsePrint() {
         System.out.println("Parsing Print");
-        consume(TK_KW_Prnt);
+        consume(TK_Print);
         ASTExpr expr = parseExpression();
         consume(TK_Semicolon);
         return new ASTPrint(expr);
@@ -195,7 +195,7 @@ public class Parser {
 
     private static ASTVarNode parseVariableDeclaration() throws SyntaxError {
         System.out.println("Parsing Var Decl");
-        consume(TK_KW_Let);
+        consume(TK_Let);
         Token id = consume(TK_Identifier);
         consume(TK_Colon);
         String type = consume(TK_Type).getLexeme();
@@ -221,8 +221,8 @@ public class Parser {
     private static ASTExpr parseSimpleExpression() {
         ASTExpr term = parseTerm();
 
-        if (lookahead.getTokenType() == TK_AddOp) {
-            Token addOp = consume(TK_AddOp);
+        if (lookahead.getTokenType() == TK_Add) {
+            Token addOp = consume(TK_Add);
             ASTExpr simpleExpr = parseSimpleExpression();
             return new ASTBinExprNode(term, simpleExpr, addOp.getLexeme());
         } else {
@@ -233,8 +233,8 @@ public class Parser {
     private static ASTExpr parseTerm() {
         ASTExpr factor = parseFactor();
 
-        if (lookahead.getTokenType() == TK_MulOp) {
-            Token addOp = consume(TK_MulOp);
+        if (lookahead.getTokenType() == TK_Mult) {
+            Token addOp = consume(TK_Mult);
             ASTExpr term = parseTerm();
             return new ASTBinExprNode(factor, term, addOp.getLexeme());
         } else {
@@ -247,8 +247,8 @@ public class Parser {
         switch (lookahead.getTokenType()) {
             case TK_Bool:
                 return parseBool();
-            case TK_Integer:
-                return new ASTIntegerNode(consume(TK_Integer).getValue());
+            case TK_Int:
+                return new ASTIntegerNode(consume(TK_Int).getValue());
             case TK_Float:
                 return new ASTFloatNode(consume(TK_Float).getValue());
             case TK_Auto:
@@ -257,7 +257,7 @@ public class Parser {
                 return parseIdentifier();
             case TK_OpenBrck:
                 return parseSubExpr();
-            case TK_AddOp:
+            case TK_Add:
                 return parseUnary();
             default:
                 throw new SyntaxError("Invalid Factor Token");
@@ -267,7 +267,7 @@ public class Parser {
     private static ASTUnaryNode parseUnary() {
         if (lookahead.getLexeme().equalsIgnoreCase("-") ||
                 lookahead.getLexeme().equalsIgnoreCase("not")) {
-            Token op = consume(TK_AddOp);
+            Token op = consume(TK_Add);
             ASTExpr expr = parseExpression();
             return new ASTUnaryNode(op.getLexeme(), expr);
         } else {
@@ -322,7 +322,7 @@ public class Parser {
     public static ASTType.Type getType(Token.TokenType type) {
 
         switch (type) {
-            case TK_Integer:
+            case TK_Int:
                 return ASTType.Type.Int;
             case TK_Float:
                 return ASTType.Type.Float;

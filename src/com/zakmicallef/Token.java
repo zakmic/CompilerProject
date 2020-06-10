@@ -52,13 +52,13 @@ public class Token {
 
     public static enum TokenType {
         TK_Bool,
-        TK_Integer,
+        TK_Int,
         TK_Float,
         TK_String,
         TK_Auto,
         TK_Identifier,
-        TK_MulOp,
-        TK_AddOp,
+        TK_Mult,
+        TK_Add,
         TK_RelOp,
         TK_Equals,
         TK_Colon,
@@ -68,15 +68,15 @@ public class Token {
         TK_Semicolon,
         TK_OpenCurly,
         TK_ClosCurly,
-        TK_KW_Set,
-        TK_KW_Let,
-        TK_KW_Def,
-        TK_KW_Prnt,
-        TK_KW_Rtrn,
-        TK_KW_If,
-        TK_KW_Else,
-        TK_KW_For,
-        TK_KW_While,
+        TK_Assign,
+        TK_Let,
+        TK_Def,
+        TK_Print,
+        TK_Return,
+        TK_If,
+        TK_Else,
+        TK_For,
+        TK_While,
         TK_Type,
         TK_Comment,
         TK_EOF;
@@ -84,22 +84,22 @@ public class Token {
 
 
     static Token tokenize(State state, String lexeme) throws LexerException {
-        if (isFinalState(state)) {
+        if (isFinal(state)) {
             switch (state) {
                 case S01:
-                    return new Token(TK_Integer, lexeme, Integer.parseInt(lexeme));
+                    return new Token(TK_Int, lexeme, Integer.parseInt(lexeme));
                 case S03:
                     return new Token(TK_Float, lexeme, Double.parseDouble(lexeme));
                 case S06:
                     return new Token(TK_String, lexeme.substring(1, lexeme.length() - 2)); // without inverted commas
                 case S07:
                 case S13:
-                    return new Token(TK_MulOp, lexeme);
+                    return new Token(TK_Mult, lexeme);
                 case S09:
                 case S12:
                     return new Token(TK_Comment, lexeme);
                 case S14:
-                    return new Token(TK_AddOp, lexeme);
+                    return new Token(TK_Add, lexeme);
                 case S15:
                 case S18:
                     return new Token(TK_RelOp, lexeme);
@@ -114,29 +114,29 @@ public class Token {
             if (state == S04) {
                 switch (lexeme) {
                     case "set":
-                        return new Token(TK_KW_Set, lexeme);
+                        return new Token(TK_Assign, lexeme);
                     case "let":
-                        return new Token(TK_KW_Let, lexeme);
+                        return new Token(TK_Let, lexeme);
                     case "ff":
-                        return new Token(TK_KW_Def, lexeme);
+                        return new Token(TK_Def, lexeme);
                     case "print":
-                        return new Token(TK_KW_Prnt, lexeme);
+                        return new Token(TK_Print, lexeme);
                     case "return":
-                        return new Token(TK_KW_Rtrn, lexeme);
+                        return new Token(TK_Return, lexeme);
                     case "if":
-                        return new Token(TK_KW_If, lexeme);
+                        return new Token(TK_If, lexeme);
                     case "for":
-                        return new Token(TK_KW_For, lexeme);
+                        return new Token(TK_For, lexeme);
                     case "else":
-                        return new Token(TK_KW_Else, lexeme);
+                        return new Token(TK_Else, lexeme);
                     case "while":
-                        return new Token(TK_KW_While, lexeme);
+                        return new Token(TK_While, lexeme);
                     case "or":
                     case "not":
-                        return new Token(TK_AddOp, lexeme);
+                        return new Token(TK_Add, lexeme);
                     case "and":
                     case "*":
-                        return new Token(TK_MulOp, lexeme);
+                        return new Token(TK_Mult, lexeme);
                     case "float":
                     case "int":
                     case "bool":
@@ -179,7 +179,7 @@ public class Token {
         throw new LexerException("Final Exception");
     }
 
-    public static enum Category {
+    public static enum TokGroup {
         Digit(0),
         DecimalDot(1),
         Alphabet(2),
@@ -201,18 +201,18 @@ public class Token {
         private static Map map = new HashMap<>();
 
 
-        private Category(int value) {
+        private TokGroup(int value) {
             this.value = value;
         }
 
         static {
-            for (Category category : Category.values()) {
-                map.put(category.value, category);
+            for (TokGroup tokGroup : TokGroup.values()) {
+                map.put(tokGroup.value, tokGroup);
             }
         }
 
-        public static Category valueOf(int category) {
-            return (Category) map.get(category);
+        public static TokGroup valueOf(int tokGroup) {
+            return (TokGroup) map.get(tokGroup);
         }
 
         public int getValue() {
@@ -221,28 +221,28 @@ public class Token {
 
     }
 
-    static Category charCategory(char c) {
+    static TokGroup charGroup(char c) {
         switch (c) {
             case '.':
-                return Category.DecimalDot;
+                return TokGroup.DecimalDot;
             case '+':
             case '-':
-                return Category.PlusMinus;
+                return TokGroup.PlusMinus;
             case '*':
-                return Category.Asterisk;
+                return TokGroup.Asterisk;
             case '/':
-                return Category.FwdSlash;
+                return TokGroup.FwdSlash;
             case '>':
             case '<':
-                return Category.Inequality;
+                return TokGroup.Inequality;
             case '!':
-                return Category.Exclamation;
+                return TokGroup.Exclamation;
             case '=':
-                return Category.Equals;
+                return TokGroup.Equals;
             case '_':
-                return Category.Underscore;
+                return TokGroup.Underscore;
             case '"':
-                return Category.Quotes;
+                return TokGroup.Quotes;
             case ':':
             case '(':
             case ')':
@@ -250,19 +250,19 @@ public class Token {
             case ';':
             case '{':
             case '}':
-                return Category.Punct;
+                return TokGroup.Punct;
             case '\n':
-                return Category.NewLine;
+                return TokGroup.NewLine;
             default:
                 break;
         }
 
         if (c >= '0' && c <= '9') {
-            return Category.Digit;
+            return TokGroup.Digit;
         } else if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
-            return Category.Alphabet;
+            return TokGroup.Alphabet;
         } else {
-            return Category.Other;
+            return TokGroup.Other;
         }
     }
 

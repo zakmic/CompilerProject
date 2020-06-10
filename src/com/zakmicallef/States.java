@@ -83,7 +83,7 @@ public class States {
 
     }
 
-    static boolean isFinalState(State state) {
+    static boolean isFinal(State state) {
         switch (state) {
             case S01:
             case S03:

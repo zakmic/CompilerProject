@@ -7,8 +7,8 @@ import java.util.Stack;
 
 import static com.zakmicallef.States.State.*;
 import static com.zakmicallef.States.State.DEF;
-import static com.zakmicallef.States.isFinalState;
-import static com.zakmicallef.Token.charCategory;
+import static com.zakmicallef.States.isFinal;
+import static com.zakmicallef.Token.charGroup;
 import static com.zakmicallef.Token.TokenType.TK_EOF;
 
 public class Lexer {
@@ -81,15 +81,16 @@ public class Lexer {
             } while (c == '\r');
             lexeme += c;
 
-            if (isFinalState(currState)) {
+            if (isFinal(currState)) {
                 stateStack.clear();
             }
+
             stateStack.push(currState);
 
-            currState = States.TransitionTable[currState.getValue()][charCategory(c).getValue()];
+            currState = States.TransitionTable[currState.getValue()][charGroup(c).getValue()];
         }
 
-        while (!isFinalState(currState) && currState != DEF) {
+        while (!isFinal(currState) && currState != DEF) {
             currState = stateStack.peek();
             stateStack.pop();
             if (lexeme.length() > 1) {
@@ -104,7 +105,7 @@ public class Lexer {
             }
         }
 
-        if (isFinalState(currState)) {
+        if (isFinal(currState)) {
             try {
                 Token token = Token.tokenize(currState, lexeme);
                 return token.getTokenType() == Token.TokenType.TK_Comment ? nextToken() : token;

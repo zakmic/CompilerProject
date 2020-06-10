@@ -17,37 +17,32 @@ public class SymbolTable {
         scopeStack.push(new HashMap<>());
     }
 
-    void push() {
-        HashMap<String, SymbolEntry> newMap = new HashMap<>(map);
-        scopeStack.push(newMap);
-    }
 
     public void pop() {
         if (scopeStack.size() > 1) {
-//            removeRefrences(scopeStack.get(scopeStack.size() - 1));
 //            scopeStack.get(scopeStack.size() - 1).clear();
             scopeStack.pop();
         } else {
-            throw new SemanticException("Invalid POP of Global Scope");
+            throw new SymbolTableError("Invalid POP of Global Scope");
         }
     }
 
 
-    public void newScope() {
+    public void push() {
         scopeStack.push(new HashMap<>(map));
     }
 
-    public void exitScope() {
-        if (scopeStack.empty()) {
-            throw new SymbolTableError("Invalid Operation: Can't remove global Scope ");
-        }
-        scopeStack.pop();
-    }
+    //    void push() {
+//        HashMap<String, SymbolEntry> newMap = new HashMap<>(map);
+//        scopeStack.push(newMap);
+//    }
+
 
     void insert(String key, ASTType.Type type) {
         ASTFormalParams formalParams = new ASTFormalParams();
         SymbolEntry value = new SymbolEntry(type, formalParams);
         HashMap<String, SymbolEntry> top = scopeStack.peek();
+        
 
         if (top.get(key) == null || map.get(key) == top.get(key)) {
             top.put(key, value);

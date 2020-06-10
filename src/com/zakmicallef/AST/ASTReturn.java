@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 
 public class ASTReturn extends ASTstsmt {
@@ -19,7 +19,7 @@ public class ASTReturn extends ASTstsmt {
     }
 
     @Override
-    public void accept(ASTVisitor visitor) {
+    public void accept(XMLVisitor visitor) {
         visitor.visit(this);
     }
 

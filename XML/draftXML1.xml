@@ -182,53 +182,42 @@
 					y
 				</Identifier>
 			</SubExpr>
-		</Print>
-		<Print>
-			<SubExpr>
-				<Identifier>
-					x
-				</Identifier>
-			</SubExpr>
-		</Print>
-		<FunctionDecl>
-			<Identifier>
-				Pow
-			</Identifier>
-			<FormalParams>
-				<FormalParam>
+			</Print>
+			<Print>
+				<SubExpr>
 					<Identifier>
 						x
 					</Identifier>
-				</FormalParam>
-				<FormalParam>
+				</SubExpr>
+				</Print>
+				<FunctionDecl>
 					<Identifier>
-						n
+						Pow
 					</Identifier>
-				</FormalParam>
-			</FormalParams>
-			<Block>
-				<Variable>
-					<Identifier>
-						y
-					</Identifier>
-					<Expression>
-					<Float>
-						1.0
-					</Float>
-				</Expression>
-				</Variable>
-				<If>
-					<BinaryExpression>
-						<Integer>
-							0
-						</Integer>
-						<Identifier>
-							n
-						</Identifier>
-						Binary: >
-					</BinaryExpression>
+					<FormalParams>
+						<FormalParam>
+							<Identifier>
+								x
+							</Identifier>
+						</FormalParam>
+						<FormalParam>
+							<Identifier>
+								n
+							</Identifier>
+						</FormalParam>
+					</FormalParams>
 					<Block>
-						<For>
+						<Variable>
+							<Identifier>
+								y
+							</Identifier>
+							<Expression>
+							<Float>
+								1.0
+							</Float>
+						</Expression>
+						</Variable>
+						<If>
 							<BinaryExpression>
 								<Integer>
 									0
@@ -238,71 +227,82 @@
 								</Identifier>
 								Binary: >
 							</BinaryExpression>
-							<Assignment>
-								<Identifier>
-									n
-								</Identifier>
+							<Block>
+								<For>
 									<BinaryExpression>
 										<Integer>
-											1
+											0
 										</Integer>
 										<Identifier>
 											n
 										</Identifier>
-										Binary: -
+										Binary: >
 									</BinaryExpression>
-								</Assignment>
-								<Block>
 									<Assignment>
 										<Identifier>
-											y
+											n
 										</Identifier>
 											<BinaryExpression>
+												<Integer>
+													1
+												</Integer>
 												<Identifier>
-													x
+													n
 												</Identifier>
+												Binary: -
+											</BinaryExpression>
+										</Assignment>
+										<Block>
+											<Assignment>
 												<Identifier>
 													y
 												</Identifier>
-												Binary: *
-											</BinaryExpression>
-										</Assignment>
+													<BinaryExpression>
+														<Identifier>
+															x
+														</Identifier>
+														<Identifier>
+															y
+														</Identifier>
+														Binary: *
+													</BinaryExpression>
+												</Assignment>
+											</Block>
+										</For>
 									</Block>
-								</For>
+								</If>
+								<Return>
+									<Identifier>
+										y
+									</Identifier>
+								</Return>
 							</Block>
-						</If>
-						<Return>
+						</FunctionDecl>
+						<Variable>
 							<Identifier>
-								y
+								z
 							</Identifier>
-						</Return>
-					</Block>
-				</FunctionDecl>
-				<Variable>
-					<Identifier>
-						z
-					</Identifier>
-					<Expression>
-					<FunctionCall>
-						<Identifier>
-							Pow
-						</Identifier>
-						<ActualParameter>
-							<Float>
-								2.1
-							</Float>
-							<Integer>
-								10
-							</Integer>
-						</ActualParameter>
-					</FunctionCall>
-				</Expression>
-				</Variable>
-				<Print>
-					<SubExpr>
-						<Identifier>
-							z
-						</Identifier>
-					</SubExpr>
-				</Print>
+							<Expression>
+							<FunctionCall>
+								<Identifier>
+									Pow
+								</Identifier>
+								<ActualParameter>
+									<Float>
+										2.1
+									</Float>
+									<Integer>
+										10
+									</Integer>
+								</ActualParameter>
+							</FunctionCall>
+						</Expression>
+						</Variable>
+						<Print>
+							<SubExpr>
+								<Identifier>
+									z
+								</Identifier>
+							</SubExpr>
+							</Print>
 </AbstractSyntaxTree>

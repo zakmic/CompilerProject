@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
@@ -13,7 +13,7 @@ public class ASTActualParams extends ASTNode {
         this.params = params;
     }
 
-    public void accept(ASTVisitor astVisitor) {
+    public void accept(XMLVisitor astVisitor) {
         astVisitor.visit(this);
     }
 
@@ -21,5 +21,5 @@ public class ASTActualParams extends ASTNode {
 
 
     public void accept(InterpreterExecution visitor) { visitor.visit(this); }
-
 }
+

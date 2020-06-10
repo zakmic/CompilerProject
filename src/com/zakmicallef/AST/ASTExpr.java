@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
@@ -9,7 +9,7 @@ public class ASTExpr extends ASTNode {
         super();
     }
 
-    public void accept(ASTVisitor visit) {
+    public void accept(XMLVisitor visit) {
     }
 
     public void accept(SemanticAnalysis visitor) {

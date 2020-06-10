@@ -1,6 +1,6 @@
 package com.zakmicallef.AST;
 
-import com.zakmicallef.Visitor.ASTVisitor;
+import com.zakmicallef.Visitor.XMLVisitor;
 import com.zakmicallef.Visitor.InterpreterExecution;
 import com.zakmicallef.Visitor.SemanticAnalysis;
 
@@ -25,7 +25,7 @@ public class ASTFormalParams extends ASTNode {
         this.astFormalParams = astFormalParams;
     }
 
-    public void accept(ASTVisitor astVisitor) {
+    public void accept(XMLVisitor astVisitor) {
         astVisitor.visit(this);
     }
     public void accept(SemanticAnalysis visitor) { visitor.visit(this); }
